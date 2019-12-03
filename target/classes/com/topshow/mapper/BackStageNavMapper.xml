@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.topshow.mapper.BackStageNavMapper">
+	<select id="getTopLevel" parameterType="int" resultMap="BackStageNavResultMap">
+		SELECT * FROM admin_nav WHERE nav_parent_id = #{level}
+	</select>
+	<resultMap type="BackStageNav" id="BackStageNavResultMap">
+		<id column="nav_id" property="navId"/>
+		<result column="nav_title" property="title"/>
+		<result column="nav_url" property="href"/>
+		<result column="nav_index" property="index"/>
+		<result column="nav_parent_id" property="parentId"/>
+		<result column="is_target" property="target"/>
+		<result column="nav_icon" property="icon"/>
+		<result column="nav_spread" property="spread" javaType="boolean"/>
+		<result column="nav_role" property="rolesString"/>
+	</resultMap>
+	<select id="getSecondLevel" parameterType="int" resultMap="BackStageNavResultMap">
+		SELECT * FROM admin_nav WHERE nav_parent_id = #{topLevelId}
+	</select>
+	<select id="getNav" parameterType="int" resultMap="BackStageNavResultMap">
+		SELECT * FROM admin_nav WHERE nav_parent_id = #{id}
+	</select>
+	<select id="findAllNav" parameterType="int" resultMap="BackStageNavResultMap">
+		SELECT * FROM admin_nav LIMIT #{start},#{limit}
+	</select>
+	<select id="findAll" resultMap="BackStageNavResultMap">
+		SELECT * FROM admin_nav
+	</select>
+	<select id="findNavCount" resultType="int">
+		SELECT count(nav_id) FROM admin_nav
+	</select>
+	<insert id="createNav" parameterType="BackStageNav">
+		INSERT INTO admin_nav(nav_parent_id,nav_title,nav_url,nav_index,is_target,nav_icon,nav_spread,nav_role)
+		VALUES(#{parentId},#{title},#{href},#{index},#{target},#{icon},#{spread},#{rolesString})
+	</insert>
+	<select id="findNavById" parameterType="int" resultMap="BackStageNavResultMap">
+		SELECT * FROM admin_nav where nav_id = #{id}
+	</select>
+	<delete id="delete" parameterType="int">
+		DELETE FROM admin_nav WHERE nav_id = #{id}
+	</delete>
+	<update id="updateNav" parameterType="BackStageNav">
+		UPDATE admin_nav
+        <set>
+            <if test="parentId != null">nav_parent_id=#{parentId},</if>
+            <if test="title != null">nav_title=#{title},</if>
+            <if test="href != null">nav_url=#{href},</if>
+            <if test="index != null">nav_index=#{index},</if>
+            <if test="target != null">is_target=#{target},</if>
+            <if test="icon != null">nav_icon=#{icon},</if>
+            <if test="spread != null">nav_spread=#{spread},</if>
+            <if test="rolesString != null">nav_role=#{rolesString}</if>
+        </set>
+        WHERE nav_id=#{navId}
+	</update>
+	
+</mapper>

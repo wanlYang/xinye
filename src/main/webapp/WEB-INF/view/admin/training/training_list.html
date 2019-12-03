@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<title>舞蹈培训项目列表--金彦后台</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<div th:replace="admin/commons/link::head('/admin/static/css/public.css')"></div>
+	</head>
+	<body class="childrenBody">
+		<form class="layui-form">
+			<blockquote class="layui-elem-quote quoteBox">
+				<form class="layui-form">
+					<div class="layui-inline">
+						<a class="layui-btn layui-btn-normal addNews_btn">添加舞蹈培训项目</a>
+					</div>
+				</form>
+			</blockquote>
+			<table id="trainingList" lay-filter="trainingList"></table>
+			<!--操作-->
+			<script type="text/javascript" th:inline="javascript">
+				var currentUserName = [[${session.ADMIN_SESSION.adminname}]];
+				var currentUserId = [[${session.ADMIN_SESSION.id}]];
+			</script>
+			<script type="text/html" id="trainingListBar" th:inline="javascript" charset="UTF-8">
+				<a class="layui-btn layui-btn-xs" title="查看详细信息" lay-event="showinfo">查看</a>
+				<a class="layui-btn layui-btn-xs" title="编辑信息" lay-event="editinfo">编辑</a>
+				<a class="layui-btn layui-btn-xs" title="删除信息" lay-event="del">删除</a>
+			</script>
+			<script type="text/html" id="toolbarTop">
+			</script>
+		</form>
+		<div th:replace="admin/commons/script::script('/admin/static/commons/training/training_list.js')"></div>
+	</body>
+
+</html>

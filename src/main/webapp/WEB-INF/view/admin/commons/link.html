@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<div th:fragment="head(cssPaths)">
+		<div th:if="${_csrf} != null">
+			<meta name="_csrf" th:content="${_csrf.token}"/>
+			<meta name="_csrf_header"  th:content="${_csrf.headerName}"/>
+		</div>
+		<link rel="stylesheet" th:href="@{/admin/static/layui/css/layui.css}" media="all" />
+		<link rel="stylesheet" th:each="cssPath,status:${#strings.setSplit(cssPaths,',')}" th:href="@{${cssPath}}" media="all" />
+	</div>
+</html>

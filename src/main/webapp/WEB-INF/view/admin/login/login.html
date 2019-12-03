@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html class="loginHtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<title>登录--后台</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<div th:replace="admin/commons/link::head('/admin/static/css/public.css')"></div>
+	<style>
+		.login_box{
+			margin:0 auto;
+			
+		}
+		.login_box:after {
+			content: "";
+			display: block;
+			clear: both;
+		}
+	</style>
+</head>
+<body class="loginBody">
+	<div class="login_box">
+	<form class="layui-form" th:charset="utf-8" id="adminLoginFrom">
+		<div class="login_face"><img th:src="@{/admin/static/images/215a955badd80e41eb8b799a6b961ac.jpg}" id="loginHeadImg" class="userAvatar"></div>
+		<div class="layui-form-item input-item" style="text-align: center;font-size: 24px;margin: 10px 0px 25px 0px;">
+			金彦后台管理
+		</div>
+		<div class="layui-form-item input-item">
+			<label for="userName">用户名</label>
+			<input type="text" placeholder="请输入用户名" autocomplete="off" name="admin_name" id="userName" class="layui-input" lay-verify="required">
+		</div>
+		<div class="layui-form-item input-item">
+			<label for="password">密码</label>
+			<input type="password" placeholder="请输入密码" autocomplete="off" name="admin_password" id="password" class="layui-input" lay-verify="required">
+		</div>
+		<div class="layui-form-item">
+			<button class="layui-btn layui-block" lay-filter="login" id="admin_login" lay-submit>登录</button>
+		</div>
+		<div class="layui-form-item layui-row" id="moreLandings">
+
+		</div>
+	</form>
+	</div>
+	<div th:replace="admin/commons/script::script('/admin/static/commons/login/login.js')"></div>
+	<script type="text/javascript" th:inline="javascript">
+		layui.use(['layer'],function(){
+			var layer = layui.layer;
+			var error = [[${error}]];
+			var message = [[${message}]];
+			if(error != null && error != ''){
+				layer.msg(error);
+			}
+			if(message != null && message != ''){
+				layer.msg(message);
+			}
+		})
+	</script>
+</body>
+</html>

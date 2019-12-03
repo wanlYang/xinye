@@ -1,0 +1,13 @@
+<<<<<<< HEAD
+*.yml linguist-language=Java
+*.html linguist-language=Java
+*.js linguist-language=Java
+*.xml linguist-language=Java
+*.css linguist-language=Java
+=======
+*.yml linguist-language=Java 
+*.html linguist-language=Java 
+*.js linguist-language=Java 
+*.xml linguist-language=Java
+*.css linguist-language=Java 
+>>>>>>> ae990aa05ecb6ecf61f73be82fccec9c7e089afd

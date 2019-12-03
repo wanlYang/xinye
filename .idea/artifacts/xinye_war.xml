@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="xinye:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>xinye</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="xinye.war">
+      <element id="artifact" artifact-name="xinye:war exploded" />
+    </root>
+  </artifact>
+</component>
