@@ -71,7 +71,7 @@
 						<li class="layui-nav-item" id="userInfo">
 							<a href="javascript:;"><img th:src="@{/admin/static/images/215a955badd80e41eb8b799a6b961ac.jpg}" onerror="this.src = '/admin/uploads/img/01460b57e4a6fa0000012e7ed75e83.png'" class="layui-nav-img userAvatar" id="userAvatar" width="35" height="35">
 								<cite class="adminName">
-									<cite class="adminName" th:text="${session.ADMIN_SESSION.adminname}"></cite>
+									<cite class="adminName" th:text="${session.ADMIN_SESSION.name}"></cite>
 								</cite>
 							</a>
 							<dl class="layui-nav-child">
@@ -102,7 +102,7 @@
 			<div class="layui-side layui-bg-black">
 				<div class="user-photo">
 					<a class="img" title="我的头像"><img th:src="@{/admin/static/images/215a955badd80e41eb8b799a6b961ac.jpg}" onerror="this.src = '/admin/uploads/img/01460b57e4a6fa0000012e7ed75e83.png'" class="userAvatar"></a>
-					<p>你好！<span class="adminName" th:text="${session.ADMIN_SESSION.adminname}"></span>, 欢迎登录</p>
+					<p>你好！<span class="adminName" th:text="${session.ADMIN_SESSION.name}"></span>, 欢迎登录</p>
 				</div>
 				<!-- 搜索 -->
 				<div class="layui-form component">

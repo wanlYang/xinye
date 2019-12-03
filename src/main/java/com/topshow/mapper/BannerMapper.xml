@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.topshow.mapper.BannerMapper">
+
+    <select id="findAll" resultMap="bannerResultMap">
+        SELECT * FROM `banner`
+
+    </select>
+    <resultMap id="bannerResultMap" type="banner">
+        <id column="id" property="id"/>
+        <result column="banner_name" property="bannerName"/>
+        <result column="banner_mol" property="bannerMol"/>
+        <result column="banner_pc" property="bannerPc"/>
+    </resultMap>
+
+</mapper>

@@ -78,41 +78,41 @@ layui.use(['form','element','layer','jquery'],function(){
 //		$(".maxUpload").text(data.websiteMaxUpload);  //最大上传限制
 //    }
 //
-    //最新文章列表
-    $.get(getRealPath() +"/admin/news/get",function(data){
-        var hotNewsHtml = '';
-        for(var i=0;i<5;i++){
-            hotNewsHtml += '<tr>'
-                +'<td align="left"><a target="_blank" href="'+getRealPath()+ "/news/detail/" +data.data[i].id+'"> '+data.data[i].title+'</a></td>'
-                +'<td>'+Format(data.data[i].release_time,"yyyy-MM-dd")+'</td>'
-                +'</tr>';
-        }
-        $(".hot_news").html(hotNewsHtml);
-        $(".userAll span").text(data.length);
-    })
+//     //最新文章列表
+//     $.get(getRealPath() +"/admin/news/get",function(data){
+//         var hotNewsHtml = '';
+//         for(var i=0;i<5;i++){
+//             hotNewsHtml += '<tr>'
+//                 +'<td align="left"><a target="_blank" href="'+getRealPath()+ "/news/detail/" +data.data[i].id+'"> '+data.data[i].title+'</a></td>'
+//                 +'<td>'+Format(data.data[i].release_time,"yyyy-MM-dd")+'</td>'
+//                 +'</tr>';
+//         }
+//         $(".hot_news").html(hotNewsHtml);
+//         $(".userAll span").text(data.length);
+//     })
+// //
+//     //导师
+//     $.get(getRealPath() +"/admin/teacher/get/count",{data:""},function(data){
+//         $(".teacher span").text(data.count);
+//     },"json")
 //
-    //导师
-    $.get(getRealPath() +"/admin/teacher/get/count",{data:""},function(data){
-        $(".teacher span").text(data.count);
-    },"json")
-    
-    //视频数量
-    $.get(getRealPath() +"/admin/video/get/count",function(data){
-        $(".video span").text(data.count);
-    },"json")
-
-    //舞蹈数量
-    $.get(getRealPath() +"/admin/training/get/count",function(data){
-        $(".training span").text(data.count);
-    },"json")
-
-    //咨询数量
-    $.get(getRealPath() +"/admin/news/get/count",function(data){
-        $(".news span").text(data.count);
-    },"json")
-
-    //留言总数
-    $.get(getRealPath() +"/admin/suggestion/get/count",function(data){
-        $(".suggestion span").text(data.count);
-    },"json")
+//     //视频数量
+//     $.get(getRealPath() +"/admin/video/get/count",function(data){
+//         $(".video span").text(data.count);
+//     },"json")
+//
+//     //舞蹈数量
+//     $.get(getRealPath() +"/admin/training/get/count",function(data){
+//         $(".training span").text(data.count);
+//     },"json")
+//
+//     //咨询数量
+//     $.get(getRealPath() +"/admin/news/get/count",function(data){
+//         $(".news span").text(data.count);
+//     },"json")
+//
+//     //留言总数
+//     $.get(getRealPath() +"/admin/suggestion/get/count",function(data){
+//         $(".suggestion span").text(data.count);
+//     },"json")
 })

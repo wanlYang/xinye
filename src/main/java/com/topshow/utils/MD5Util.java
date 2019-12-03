@@ -28,7 +28,7 @@ public class MD5Util {
     }
 
     public static void main(String[] args) throws UnsupportedEncodingException {
-        String as = "123456789";
+        String as = "1";
         System.out.println(Base64Util.decoder(MD5Encode(as)));
         System.out.println();
     }

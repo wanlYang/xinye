@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="utf-8">
-		<title>首页banner修改--金彦后台</title>
+		<title>首页banner修改--新晔后台</title>
 		<meta name="renderer" content="webkit">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -23,11 +23,12 @@
 			<table id="bannerList" lay-filter="bannerList"></table>
 			<!--操作-->
 			<script type="text/javascript" th:inline="javascript">
-				var currentUserName = [[${session.ADMIN_SESSION.adminname}]];
+				var currentUserName = [[${session.ADMIN_SESSION.name}]];
 				var currentUserId = [[${session.ADMIN_SESSION.id}]];
 			</script>
 			<script type="text/html" id="bannerListBar" th:inline="javascript" charset="UTF-8">
 				<a class="layui-btn layui-btn-xs" title="删除信息" lay-event="del">删除</a>
+				<a class="layui-btn layui-btn-xs" title="编辑信息" lay-event="edit">编辑</a>
 			</script>
 			<script type="text/html" id="toolbarTop">
 			</script>

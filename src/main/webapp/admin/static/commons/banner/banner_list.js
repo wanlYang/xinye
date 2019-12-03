@@ -8,7 +8,7 @@
 	// 导师列表
 	var tableIns = table.render({
 		elem: '#bannerList',
-		url: getRealPath() + '/admin/banner/get/list',
+		url: getRealPath() + '/admin/banner/list/get/submit',
 		cellMinWidth: 95,
 		page: true,
 		method: "POST",
@@ -25,13 +25,31 @@
 					align: "center",
 				},
 				{
+					field: 'bannerName',
+					title: '标题',
+					align: 'center',
+					templet: function(d) {
+						return d.bannerName;
+					}
+				},
+				{
 					field: 'imgLocal',
-					title: '图',
+					title: 'PC端',
 					event: 'preview',
                     style: 'cursor: pointer;',
 					align: 'center',
 					templet: function(d) {
-						return "<img title='点击预览' src='"+ getRealPath() + '/'+d.imgLocal+"' class='cover'/>";
+						return "<img title='点击预览' src='"+ getRealPath()  +d.bannerPc+"' class='cover'/>";
+					}
+				},
+				{
+					field: 'imgLocal',
+					title: '移动端',
+					event: 'preview_m',
+					style: 'cursor: pointer;',
+					align: 'center',
+					templet: function(d) {
+						return "<img title='点击预览' src='"+ getRealPath()  +d.bannerMol+"' class='cover'/>";
 					}
 				},
 				{
@@ -103,7 +121,9 @@
 				layer.close(index);
 			});
 		} else if(layEvent === 'preview') {//显示大图
-            preview_img(getRealPath() + "/"+data.imgLocal);
-        }
+            preview_img(getRealPath() + "/"+data.bannerPc);
+        } else if(layEvent === 'preview_m') {//显示大图
+			preview_img(getRealPath() + "/"+data.bannerMol);
+		}
 	});
 })

@@ -2,16 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.topshow.mapper.AdminMapper">
     <select id="findAdminByNameAndPassword" resultMap="adminResultMap">
-    	SELECT id,adminname,password,phone,email,status,forceTime,lastLoginTime FROM `admin` WHERE adminname = #{admin_name} AND password = #{admin_password}
+    	SELECT * FROM `admin` WHERE name = #{admin_name} AND password = #{admin_password}
     </select>
     <resultMap type="Admin" id="adminResultMap">
     	<id column="id" property="id"></id>
-    	<result column="adminname" property="adminname"/>
+    	<result column="name" property="name"/>
     	<result column="password" property="password"/>
-    	<result column="phone" property="phone"/>
-    	<result column="email" property="email"/>
-    	<result column="status" property="status"/>
-    	<result column="forceTime" property="forceTime"/>
-    	<result column="lastLoginTime" property="lastLoginTime"/>
     </resultMap>
 </mapper>

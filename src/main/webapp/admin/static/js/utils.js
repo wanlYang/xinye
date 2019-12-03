@@ -43,8 +43,8 @@
 function preview_img(url) {
     var img = new Image();
     img.src = url;
-    var height = img.height + 44; //获取图片高度
-    var width = img.width; //获取图片宽度
+    var height = img.height /2; //获取图片高度
+    var width = img.width/2; //获取图片宽度
     var imgHtml = "<img src='" + url + "' />";
     //弹出层
     top.layer.msg("稍后会自动消失!");
