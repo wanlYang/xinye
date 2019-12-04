@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.topshow.mapper.ShopMapper">
+    <insert id="insert" parameterType="shop">
+        INSERT INTO `shop`(shop_name,shop_photo,shop_add) VALUES (#{shopName},#{shopPhoto},#{shopAdd})
+    </insert>
+    <update id="update" parameterType="shop">
+        UPDATE `shop`
+        <set>
+            <if test="shopName != null">shop_name=#{shopName},</if>
+            <if test="shopPhoto != null">shop_photo=#{shopPhoto},</if>
+            <if test="shopAdd != null">shop_add=#{shopAdd}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <delete id="delete">
+        DELETE FROM `shop` WHERE id = #{id}
+    </delete>
+
+    <select id="findAll" resultMap="shopResultMap">
+        SELECT * FROM `shop`
+    </select>
+    <resultMap id="shopResultMap" type="shop">
+        <id column="id" property="id"/>
+        <result column="shop_name" property="shopName"/>
+        <result column="shop_photo" property="shopPhoto"/>
+        <result column="shop_add" property="shopAdd"/>
+    </resultMap>
+</mapper>

@@ -13,20 +13,8 @@ layui.use(['form', 'layer','upload', 'laydate','croppers'], function() {
 	var date = new Date();
 	
 	form.verify({});
-	var tempImg_m = true;
-    var tempImg_p = true;
 	// 监听表单
-	form.on("submit(addBanner)", function(data) {
-		 if(tempImg_m && tempImg_p){
-		        top.layer.msg("请上传简图!!", {
-		        icon:5,
-		        time: 1500,
-		        anim: 6,
-		        shade: 0,
-		        shadeClose: true //开启遮罩关闭
-		        });
-		        return false;
-		 }
+	form.on("submit(editBanner)", function(data) {
 		var index = top.layer.msg('数据提交中,请稍候', {
 			icon: 16,
 			time: false,
@@ -35,19 +23,19 @@ layui.use(['form', 'layer','upload', 'laydate','croppers'], function() {
 		// 实际使用时的提交信息
 		$.ajax({
 			type: "POST",
-			url: getRealPath() + "/admin/banner/add/submit",
+			url: getRealPath() + "/admin/banner/edit/submit",
 			data: data.field,
 			success: function(result) {
 				if(result.status == 200) {
 					setTimeout(function() {
 						top.layer.close(index);
-						top.layer.msg("添加成功！");
+						top.layer.msg("编辑成功！");
 						layer.closeAll("iframe");
 						parent.location.reload();
 					}, 500);
 				} else {
 					top.layer.close(index);
-					top.layer.msg("添加失败！" + result.message);
+					top.layer.msg("编辑失败！" + result.message);
 				}
 			}
 		});
@@ -69,7 +57,6 @@ layui.use(['form', 'layer','upload', 'laydate','croppers'], function() {
         }
          ,done: function(result){
              layer.msg(result.msg,{icon: 1});
-             tempImg_m = false;
              $("#bannerImg_m").val(result.data.src);
 			$("#mol")[0].src = result.data.src;
           }
@@ -92,8 +79,8 @@ layui.use(['form', 'layer','upload', 'laydate','croppers'], function() {
         }
         ,done: function(result){
             layer.msg(result.msg,{icon: 1});
-            tempImg_m = false;
 			$("#bannerImg_p").val(result.data.src);
+
 			$("#pc")[0].src = result.data.src
         }
         ,error: function(){

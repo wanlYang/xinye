@@ -5,48 +5,51 @@
 		laytpl = layui.laytpl,
 		table = layui.table,
 		laydate = layui.laydate;
+	// 店面列表
 	var tableIns = table.render({
-		elem: '#bannerList',
-		url: getRealPath() + '/admin/banner/list/get/submit',
+		elem: '#shopList',
+		url: getRealPath() + '/admin/shop/list/get',
 		cellMinWidth: 95,
+		page: true,
 		method: "POST",
 		height: "full-125",
-		id: "bannerListTable",
+		limits: [10, 15, 20, 25],
+		limit: 20,
+		id: "shopListTable",
 		cols: [
-				[	
+				[
 				{
 					sort: true,
 					field: "id",
 					title: "ID",
+					minWidth: 210,
 					align: "center",
 				},
 				{
-					field: 'bannerName',
-					title: '标题',
+					field: 'shopName',
+					title: '店面名称',
+					align: "center"
+				},
+				{
+					field: 'shopPhoto',
+					title: '店面图',
 					align: 'center',
 					templet: function(d) {
-						return d.bannerName;
+						return "<img src='"+ getRealPath()  +d.shopPhoto+"' class='cover'/>";
 					}
 				},
 				{
-					field: 'bannerPc',
-					title: 'PC端',
+					field: 'shopAdd',
+					title: '店面地址',
 					align: 'center',
 					templet: function(d) {
-						return "<img src='"+ getRealPath()  +d.bannerPc+"' class='cover'/>";
-					}
-				},
-				{
-					field: 'bannerMol',
-					title: '移动端',
-					align: 'center',
-					templet: function(d) {
-						return "<img src='"+ getRealPath()  +d.bannerMol+"' class='cover'/>";
+						return d.shopAdd;
 					}
 				},
 				{
 					title: '操作',
-					templet: '#bannerListBar',
+					minWidth: 240,
+					templet: '#shopListBar',
 					fixed: "right",
 					align: "center"
 				}
@@ -64,15 +67,27 @@
 		},
 		toolbar: true
 	});
-	// 添加
-	function addBanner() {
+	// 检测select
+	var keyWordType = "";
+	form.on('select(skeyType)', function(data){
+		if(data.value == ""){
+			$("#keyWordBox").html("");
+		}else{
+			$("#keyWordBox").html(
+				"<input type='text' class='layui-input searchVal' placeholder='请输入关键字'>"
+			);
+			keyWordType = "text";
+			form.render();
+		}
+	});
+	function addShop() {
 		var index = layui.layer.open({
-			title: "添加Banner",
+			title: "添加店面图",
 			type: 2,
-			content: getRealPath() + "/admin/banner/add/page",
+			content: getRealPath() + "/admin/shop/add",
 			success: function(layero, index) {
 				setTimeout(function() {
-					layui.layer.tips('点击此处返回列表', '.layui-layer-setwin .layui-layer-close', {
+					layui.layer.tips('点击此处返回导师列表', '.layui-layer-setwin .layui-layer-close', {
 						tips: 3
 					});
 				}, 500)
@@ -89,22 +104,57 @@
 		})
 	}
 	$(".addNews_btn").click(function() {
-		addBanner();
+		addShop();
 	})
+
+	
 	// 列表操作
-	table.on('tool(bannerList)', function(obj) {
+	table.on('tool(shopList)', function(obj) {
 		var layEvent = obj.event,
 			data = obj.data;
 		// 监听操作
-		if(layEvent === 'del') { // 删除
-			layer.confirm('该操作会将Banner的所有信息清空!<br/>确定删除此Banner?', {
+		//编辑导师页面
+		if(layEvent === "edit"){
+			var teacherIndex = layui.layer.open({
+				title: "编辑店面",
+				type: 2,
+				content: getRealPath() + "/admin/shop/edit",
+				success: function(layero, index) {
+					var body = layui.layer.getChildFrame('body', index);
+					var iframeWindow = window[layero.find('iframe')[0]['name']];
+					body.find("#id").val(data.id);
+					body.find("#shopImgVal").val(data.shopPhoto);
+					body.find("#shop_img_view")[0].src = getRealPath() + data.shopPhoto;
+					body.find(".shopName").val(data.shopName);
+					body.find(".shopAdd").val(data.shopAdd);
+					if (typeof(iframeWindow.layui.form) != "undefined") {
+						iframeWindow.layui.form.render();
+					}
+					setTimeout(function() {
+						layui.layer.tips('点击此处返回导师列表', '.layui-layer-setwin .layui-layer-close', {
+							tips: 3
+						});
+					}, 500)
+				},
+				end: function() {
+					$(window).unbind("resize");
+					
+				}
+			})
+			layui.layer.full(teacherIndex);
+			window.sessionStorage.setItem("teacherIndex", teacherIndex);
+			// 改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+			$(window).on("resize", function() {
+				layui.layer.full(window.sessionStorage.getItem("teacherIndex"));
+			})
+		}else if(layEvent === 'del') { // 删除
+			layer.confirm('该操作会将店面的所有信息清空!<br/>确定删除此店面?', {
 				icon: 3,
 				title: '提示信息'
 			}, function(index) {
-				$.post(getRealPath() + "/admin/banner/delete/submit",{id:data.id},function(result){
+				$.post(getRealPath() + "/admin/shop/delete/submit",{id:data.id},function(result){
 					if(result.status == 200){
 						obj.del();// 删除缓存
-						location.reload();
 						top.layer.msg(result.message);
 					}else{
 						top.layer.msg("删除失败!");
@@ -112,39 +162,7 @@
 				},"json");
 				layer.close(index);
 			});
-		} else if(layEvent === 'edit'){
-			var index = layui.layer.open({
-				title: "编辑Banner",
-				type: 2,
-				content: getRealPath() + "/admin/banner/edit/page",
-				success: function(layero, index) {
-					var body = layui.layer.getChildFrame('body', index);
-					var iframeWindow = window[layero.find('iframe')[0]['name']];
-					body.find(".id").val(data.id);
-					body.find("#bannerImg_m").val(data.bannerMol);
-					body.find("#bannerImg_p").val(data.bannerPc);
-					body.find(".bannerName").val(data.bannerName);
-					body.find("#mol")[0].src = data.bannerMol;
-					body.find("#pc")[0].src = data.bannerPc;
-					if (typeof(iframeWindow.layui.form) != "undefined") {
-						iframeWindow.layui.form.render();
-					}
-					setTimeout(function() {
-						layui.layer.tips('点击此处返回列表', '.layui-layer-setwin .layui-layer-close', {
-							tips: 3
-						});
-					}, 500)
-				},
-				end: function() {
-					$(window).unbind("resize");
-				}
-			})
-			layui.layer.full(index);
-			window.sessionStorage.setItem("index", index);
-			// 改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
-			$(window).on("resize", function() {
-				layui.layer.full(window.sessionStorage.getItem("index"));
-			})
 		}
 	});
+	
 })

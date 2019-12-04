@@ -13,4 +13,10 @@ public interface BannerMapper {
 
 
     List<Banner> findAll();
+
+    Integer insert(Banner banner);
+
+    Integer delete(String id);
+
+    Integer update(Banner banner);
 }

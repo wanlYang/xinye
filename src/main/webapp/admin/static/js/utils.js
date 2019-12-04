@@ -39,28 +39,8 @@
         }
     });
 })
-//显示大图方法
-function preview_img(url) {
-    var img = new Image();
-    img.src = url;
-    var height = img.height /2; //获取图片高度
-    var width = img.width/2; //获取图片宽度
-    var imgHtml = "<img src='" + url + "' />";
-    //弹出层
-    top.layer.msg("稍后会自动消失!");
-    layer.open({
-        type: 1,
-        shade: 0.8,
-        offset: 'auto',
-        time:3000,
-        area: [width + 'px',height+'px'],
-        shadeClose:true,//点击外围关闭弹窗
-        scrollbar: false,//不现实滚动条
-        title: "图片预览", //不显示标题
-        content: imgHtml, //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
 
-    });
-}
+
 function getRealPath() {
     // 获取当前网址，如： http://localhost:8083/myproj/view/my.jsp
     var curWwwPath = window.document.location.href;

@@ -58,5 +58,33 @@ public class BackStageViewController {
 
         return "admin/banner/banner_list";
     }
+    @RequestMapping(value = "/banner/add/page",method = RequestMethod.GET)
+    public String addBanner() {
+
+
+        return "admin/banner/add_banner";
+    }
+    @RequestMapping(value = "/banner/edit/page",method = RequestMethod.GET)
+    public String editBanner() {
+
+
+        return "admin/banner/edit_banner";
+    }
+    @RequestMapping(value = "/shop/list",method = RequestMethod.GET)
+    public String shop() {
+
+        return "admin/shop/shop_list";
+    }
+
+    @RequestMapping(value = "/shop/add",method = RequestMethod.GET)
+    public String addShop() {
+
+        return "admin/shop/add_shop";
+    }
+    @RequestMapping(value = "/shop/edit",method = RequestMethod.GET)
+    public String editShop() {
+
+        return "admin/shop/edit_shop";
+    }
 
 }

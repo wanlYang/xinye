@@ -23,4 +23,25 @@ public class BannerServiceImpl implements BannerService {
 
         return bannerMapper.findAll();
     }
+
+    @Override
+    public Integer addBanner(Banner banner) {
+
+        Integer row = bannerMapper.insert(banner);
+
+        return row;
+    }
+
+    @Override
+    public Integer delete(String id) {
+        Integer row = bannerMapper.delete(id);
+
+        return row;
+    }
+
+    @Override
+    public Integer editBanner(Banner banner) {
+
+        return bannerMapper.update(banner);
+    }
 }
