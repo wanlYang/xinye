@@ -7,22 +7,17 @@
 		laydate = layui.laydate;
 	// 导师列表
 	var tableIns = table.render({
-		elem: '#newsList',
-		url: getRealPath() + '/admin/news/get/list',
+		elem: '#informationList',
+		url: getRealPath() + '/admin/information/list/get',
 		cellMinWidth: 95,
 		page: true,
 		method: "POST",
 		height: "full-125",
 		limits: [10, 15, 20, 25],
 		limit: 20,
-		id: "newsListTable",
+		id: "informationListTable",
 		cols: [
-				[	
-//				{
-//					type: "checkbox",
-//					fixed: "left",
-//					width: 50
-//				},
+				[
 				{
 					sort: true,
 					field: "id",
@@ -30,39 +25,54 @@
 					align: "center",
 				},
 				{
-					field: 'title',
-					title: '新闻标题',
+					field: 'name',
+					title: '资讯标题',
 					align: "center"
 				},
 				{
-					field: 'release_time',
+					field: 'photo',
+					title: '资讯简图',
+					align: 'center',
+					templet: function(d) {
+						return "<img src='"+ getRealPath() + '/'+d.photo+"' class='cover' alt=''/>";
+					}
+				},
+				{
+					field: 'time',
 					title: '发布时间',
 					align: 'center',
 					templet: function(d) {
-						return Format(d.release_time,"yyyy-MM-dd hh:mm:ss");
+						return Format(d.time,"yyyy-MM-dd hh:mm:ss");
 					}
 				},
 				{
-					field: 'img',
-					title: '新闻简图',
-					event: 'preview',
-                    style: 'cursor: pointer;',
+					field: 'content',
+					title: '大致内容',
 					align: 'center',
 					templet: function(d) {
-						return "<img title='点击预览' src='"+ getRealPath() + '/'+d.img+"' class='cover'/>";
+						return d.content;
 					}
 				},
 				{
-					field: 'browse_volume',
-					title: '浏览量',
+					field: 'person',
+					title: '资讯所属',
 					align: 'center',
 					templet: function(d) {
-						return d.browse_volume;
+						if (d.person == 1){
+							return "行业动态"
+						}
+						if (d.person == 2){
+							return "公司新闻"
+						}
+						if (d.person == 3){
+							return "健康知识"
+						}
+						return "异常";
 					}
 				},
 				{
 					title: '操作',
-					templet: '#newsListBar',
+					templet: '#informationListBar',
 					fixed: "right",
 					align: "center"
 				}
@@ -80,15 +90,15 @@
 		},
 		toolbar: true
 	});
-	// 添加培训项目
-	function addNews() {
+	// 添加资讯
+	function addInformation() {
 		var index = layui.layer.open({
-			title: "添加新闻",
+			title: "添加资讯",
 			type: 2,
-			content: getRealPath() + "/admin/news/add",
+			content: getRealPath() + "/admin/topshow/information/add",
 			success: function(layero, index) {
 				setTimeout(function() {
-					layui.layer.tips('点击此处返回培训项目列表', '.layui-layer-setwin .layui-layer-close', {
+					layui.layer.tips('点击此处返回资讯列表', '.layui-layer-setwin .layui-layer-close', {
 						tips: 3
 					});
 				}, 500)
@@ -105,28 +115,53 @@
 		})
 	}
 	$(".addNews_btn").click(function() {
-		addNews();
+		addInformation();
 	})
 	// 列表操作
-	table.on('tool(newsList)', function(obj) {
+	table.on('tool(informationList)', function(obj) {
 		var layEvent = obj.event,
 			data = obj.data;
 		// 监听操作
 		//编辑页面
-		if(layEvent === "editinfo"){
+		if(layEvent === "edit"){
 			var newsIndex = layui.layer.open({
-				title: "编辑新闻",
+				title: "编辑资讯",
 				type: 2,
-				content: getRealPath() + "/admin/news/edit",
+				content: getRealPath() + "/admin/topshow/information/edit",
 				success: function(layero, index) {
 					var body = layui.layer.getChildFrame('body', index);
 					var iframeWindow = window[layero.find('iframe')[0]['name']];
 					body.find("#id").val(data.id);
-					body.find("#news_content").val(data.content);
-					body.find("#saveimg").val(data.img);
-					body.find(".browse_volume").val(data.browse_volume);
-					body.find(".title").val(data.title);
-					body.find("#newsImg")[0].src = getRealPath() + data.img;
+					$.ajax({
+						type: "POST",
+						async:false,
+						url: getRealPath() + "/admin/information/get",
+						data: {"id":data.id},
+						success: function(result) {
+							if(result.status == 200) {
+                                body.find("#news_content").val(result.data.content);
+							} else {
+								top.layer.close(index);
+								top.layer.msg("获取失败！" + result.message);
+							}
+						}
+					});
+
+					body.find(".name").val(data.name);
+					body.find("#saveimg").val(data.photo);
+					body.find("#newsImg")[0].src = getRealPath() + data.photo;
+					body.find("#person").each(function() {
+						// this代表的是<option></option>，对option再进行遍历
+						$(this).children("option").each(function() {
+							// 判断需要对那个选项进行回显
+							if (this.value == data.person) {
+								// 进行回显
+								$(this).attr("selected","selected");
+							}
+						});
+					})
+
+
 					if (typeof(iframeWindow.layui.form) != "undefined") {
 						iframeWindow.layui.form.render();
 					}
@@ -147,14 +182,12 @@
 			$(window).on("resize", function() {
 				layui.layer.full(window.sessionStorage.getItem("newsIndex"));
 			})
-		}else if(layEvent === 'showinfo') { // 详情
-			window.open(getRealPath() + "/news/detail/"+data.id);
 		} else if(layEvent === 'del') { // 删除
-			layer.confirm('该操作会将此新闻的所有信息清空!<br/>确定删除此新闻?', {
+			layer.confirm('该操作会将此资讯的所有信息清空!<br/>确定删除此资讯?', {
 				icon: 3,
 				title: '提示信息'
 			}, function(index) {
-				$.post(getRealPath() + "/admin/news/del/submit",{id:data.id},function(result){
+				$.post(getRealPath() + "/admin/information/del/submit",{id:data.id},function(result){
 					if(result.status == 200){
 						obj.del();// 删除缓存
 						top.layer.msg(result.message);
@@ -164,8 +197,6 @@
 				},"json");
 				layer.close(index);
 			});
-		} else if(layEvent === 'preview') {//显示大图
-            preview_img(getRealPath() + "/"+data.img);
-        }
+		}
 	});
 })

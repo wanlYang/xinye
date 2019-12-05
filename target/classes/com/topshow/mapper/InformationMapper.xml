@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.topshow.mapper.InformationMapper">
+    <insert id="insert" parameterType="information">
+        INSERT INTO `news`(news_name,news_photo,news_time,news_content,news_person) VALUES (#{name},#{photo},#{time},#{content},#{person})
+    </insert>
+    <update id="update" parameterType="information">
+        UPDATE `news`
+        <set>
+            <if test="name != null">news_name=#{name},</if>
+            <if test="photo != null">news_photo=#{photo},</if>
+            <if test="time != null">news_time=#{time},</if>
+            <if test="content != null">news_content=#{content},</if>
+            <if test="person != null">news_person=#{person}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <delete id="delete">
+        DELETE FROM `news` WHERE id = #{id}
+    </delete>
+
+    <select id="findAllListByPage" resultMap="informationResultMap">
+
+        SELECT * from `news` LIMIT #{start},#{limit}
+    </select>
+    <select id="findById" resultMap="informationResultMap">
+         SELECT * from `news` WHERE id = #{id}
+    </select>
+    <resultMap id="informationResultMap" type="information">
+        <id column="id" property="id"/>
+        <result column="news_name" property="name"/>
+        <result column="news_photo" property="photo"/>
+        <result column="news_time" property="time"/>
+        <result column="news_content" property="content"/>
+        <result column="news_person" property="person"/>
+    </resultMap>
+</mapper>

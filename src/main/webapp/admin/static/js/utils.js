@@ -40,7 +40,6 @@
     });
 })
 
-
 function getRealPath() {
     // 获取当前网址，如： http://localhost:8083/myproj/view/my.jsp
     var curWwwPath = window.document.location.href;

@@ -87,4 +87,23 @@ public class BackStageViewController {
         return "admin/shop/edit_shop";
     }
 
+    @RequestMapping(value = "/topshow/information",method = RequestMethod.GET)
+    public String topshowInfo() {
+
+        return "admin/information/information_list";
+    }
+
+    @RequestMapping(value = "/topshow/information/add",method = RequestMethod.GET)
+    public String addTopshowInfo() {
+
+        return "admin/information/add_information";
+    }
+    @RequestMapping(value = "/topshow/information/edit",method = RequestMethod.GET)
+    public String editTopshowInfo() {
+
+        return "admin/information/edit_information";
+    }
+
+
+
 }
