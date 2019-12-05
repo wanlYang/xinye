@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.topshow.mapper.StudentMapper">
+    <insert id="insert" parameterType="student">
+        INSERT INTO `student`(student_name,student_photo,student_content) VALUES (#{name},#{photo},#{content})
+    </insert>
+    <update id="update" parameterType="student">
+        UPDATE `student`
+        <set>
+            <if test="name != null">student_name=#{name},</if>
+            <if test="photo != null">student_photo=#{photo},</if>
+            <if test="content != null">student_content=#{content}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <delete id="del">
+        DELETE FROM `student` where id = #{id}
+    </delete>
+
+    <select id="findAllListByPage" resultMap="studentResultMap">
+        SELECT * from `student` LIMIT #{start},#{limit}
+
+    </select>
+    <select id="findById" resultMap="studentResultMap">
+        SELECT * FROM `student` WHERE id = #{id}
+    </select>
+    <resultMap id="studentResultMap" type="student">
+        <id column="id" property="id"/>
+        <result column="student_name" property="name"/>
+        <result column="student_photo" property="photo"/>
+        <result column="student_content" property="content"/>
+    </resultMap>
+</mapper>

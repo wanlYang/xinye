@@ -104,6 +104,22 @@ public class BackStageViewController {
         return "admin/information/edit_information";
     }
 
+    @RequestMapping(value = "/student/cadetstyle",method = RequestMethod.GET)
+    public String student() {
+
+        return "admin/student/cadetstyle_list";
+    }
+
+    @RequestMapping(value = "/student/add",method = RequestMethod.GET)
+    public String addStudent() {
+        return "admin/student/add_cadetstyle";
+    }
+
+    @RequestMapping(value = "/student/edit",method = RequestMethod.GET)
+    public String editStudent() {
+        return "admin/student/edit_cadetstyle";
+    }
+
 
 
 }

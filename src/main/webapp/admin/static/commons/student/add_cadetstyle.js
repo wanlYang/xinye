@@ -44,7 +44,7 @@ layui.use(['form', 'layer','upload', 'laydate','croppers'], function() {
 		pasteImage: true, //允许粘贴图片
 		defaultImage: getRealPath() + '/admin/static/simditor/images/image.png', //编辑器插入的默认图片，此处可以删除
 		upload: {
-			url: getRealPath() + '/admin/information/upload/content/img', //文件上传的接口地址
+			url: getRealPath() + '/admin/student/upload/content/img', //文件上传的接口地址
 			params: null, //键值对,指定文件上传接口的额外参数,上传的时候随文件一起提交
 			fileKey: 'upload_file', //服务器端获取文件数据的参数名
 			connectionCount: 3,
@@ -85,7 +85,7 @@ layui.use(['form', 'layer','upload', 'laydate','croppers'], function() {
 		data.field.content = editor.getValue();
 		$.ajax({
 			type: "POST",
-			url: getRealPath() + "/admin/information/add/submit",
+			url: getRealPath() + "/admin/student/add/submit",
 			data: data.field,
 			success: function(result) {
 				if(result.status == 200) {
@@ -105,7 +105,7 @@ layui.use(['form', 'layer','upload', 'laydate','croppers'], function() {
 	})
 	upload.render({
    	 elem: '#editimg'
-        , url: getRealPath() + "/admin/information/upload/img" //必填项
+        , url: getRealPath() + "/admin/student/upload/img" //必填项
         , method: ''  //可选项。HTTP类型，默认post
         , size:300
         , accept: 'images'

@@ -5,17 +5,16 @@
 		laytpl = layui.laytpl,
 		table = layui.table,
 		laydate = layui.laydate;
-	// 导师列表
 	var tableIns = table.render({
-		elem: '#informationList',
-		url: getRealPath() + '/admin/information/list/get',
+		elem: '#cadetstyleList',
+		url: getRealPath() + '/admin/student/list/get',
 		cellMinWidth: 95,
 		page: true,
 		method: "POST",
 		height: "full-125",
 		limits: [10, 15, 20, 25],
 		limit: 20,
-		id: "informationListTable",
+		id: "cadetstyleListTable",
 		cols: [
 				[
 				{
@@ -26,23 +25,18 @@
 				},
 				{
 					field: 'name',
-					title: '资讯标题',
-					align: "center"
-				},
-				{
-					field: 'photo',
-					title: '资讯简图',
+					title: '标题名称',
 					align: 'center',
 					templet: function(d) {
-						return "<img src='"+ getRealPath() + '/'+d.photo+"' class='cover' alt=''/>";
+						return d.name;
 					}
 				},
 				{
-					field: 'time',
-					title: '发布时间',
+					field: 'photo',
+					title: '封面简图',
 					align: 'center',
 					templet: function(d) {
-						return Format(d.time,"yyyy-MM-dd hh:mm:ss");
+						return "<img src='"+ getRealPath() + '/'+d.photo+"' class='cover' alt=''/>";
 					}
 				},
 				{
@@ -54,25 +48,8 @@
 					}
 				},
 				{
-					field: 'person',
-					title: '资讯所属',
-					align: 'center',
-					templet: function(d) {
-						if (d.person == 1){
-							return "行业动态"
-						}
-						if (d.person == 2){
-							return "公司新闻"
-						}
-						if (d.person == 3){
-							return "健康知识"
-						}
-						return "异常";
-					}
-				},
-				{
 					title: '操作',
-					templet: '#informationListBar',
+					templet: '#cadetstyleListBar',
 					fixed: "right",
 					align: "center"
 				}
@@ -91,14 +68,14 @@
 		toolbar: true
 	});
 	// 添加资讯
-	function addInformation() {
+	function addStudent() {
 		var index = layui.layer.open({
-			title: "添加资讯",
+			title: "添加学员风采",
 			type: 2,
-			content: getRealPath() + "/admin/topshow/information/add",
+			content: getRealPath() + "/admin/student/add",
 			success: function(layero, index) {
 				setTimeout(function() {
-					layui.layer.tips('点击此处返回资讯列表', '.layui-layer-setwin .layui-layer-close', {
+					layui.layer.tips('点击此处返回列表', '.layui-layer-setwin .layui-layer-close', {
 						tips: 3
 					});
 				}, 500)
@@ -115,19 +92,19 @@
 		})
 	}
 	$(".addNews_btn").click(function() {
-		addInformation();
+		addStudent();
 	})
 	// 列表操作
-	table.on('tool(informationList)', function(obj) {
+	table.on('tool(cadetstyleList)', function(obj) {
 		var layEvent = obj.event,
 			data = obj.data;
 		// 监听操作
 		//编辑页面
 		if(layEvent === "edit"){
 			var newsIndex = layui.layer.open({
-				title: "编辑资讯",
+				title: "编辑",
 				type: 2,
-				content: getRealPath() + "/admin/topshow/information/edit",
+				content: getRealPath() + "/admin/student/edit",
 				success: function(layero, index) {
 					var body = layui.layer.getChildFrame('body', index);
 					var iframeWindow = window[layero.find('iframe')[0]['name']];
@@ -135,7 +112,7 @@
 					$.ajax({
 						type: "POST",
 						async:false,
-						url: getRealPath() + "/admin/information/get",
+						url: getRealPath() + "/admin/student/get",
 						data: {"id":data.id},
 						success: function(result) {
 							if(result.status == 200) {
@@ -150,16 +127,6 @@
 					body.find(".name").val(data.name);
 					body.find("#saveimg").val(data.photo);
 					body.find("#newsImg")[0].src = getRealPath() + data.photo;
-					body.find("#person").each(function() {
-						// this代表的是<option></option>，对option再进行遍历
-						$(this).children("option").each(function() {
-							// 判断需要对那个选项进行回显
-							if (this.value == data.person) {
-								// 进行回显
-								$(this).attr("selected","selected");
-							}
-						});
-					})
 
 
 					if (typeof(iframeWindow.layui.form) != "undefined") {
@@ -183,11 +150,11 @@
 				layui.layer.full(window.sessionStorage.getItem("newsIndex"));
 			})
 		} else if(layEvent === 'del') { // 删除
-			layer.confirm('该操作会将此资讯的所有信息清空!<br/>确定删除此资讯?', {
+			layer.confirm('该操作会将此学员风采的所有信息清空!<br/>确定删除?', {
 				icon: 3,
 				title: '提示信息'
 			}, function(index) {
-				$.post(getRealPath() + "/admin/information/del/submit",{id:data.id},function(result){
+				$.post(getRealPath() + "/admin/student/del/submit",{id:data.id},function(result){
 					if(result.status == 200){
 						obj.del();// 删除缓存
 						top.layer.msg(result.message);

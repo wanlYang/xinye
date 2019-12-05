@@ -16,7 +16,7 @@ layui.use(['form', 'layer','upload', 'laydate','croppers'], function() {
 	Simditor.locale = 'zh-CN'; //设置中文
 	var editor = new Simditor({
 		textarea: $('#news_content'), //textarea的id
-		placeholder: '这里输入新闻内容...',
+		placeholder: '这里输入内容...',
 		toolbar: [
 			'title',
 			'bold',
