@@ -120,6 +120,27 @@ public class BackStageViewController {
         return "admin/student/edit_cadetstyle";
     }
 
+    @RequestMapping(value = "/dancetraining/list",method = RequestMethod.GET)
+    public String dance() {
+        return "admin/training/training_list";
+    }
 
+    @RequestMapping(value = "/dancetraining/add",method = RequestMethod.GET)
+    public String danceAdd() {
+        return "admin/training/add_training";
+    }
+    @RequestMapping(value = "/dancetraining/edit",method = RequestMethod.GET)
+    public String danceEdit() {
+        return "admin/training/edit_training";
+    }
 
+    @RequestMapping(value = "/about/list",method = RequestMethod.GET)
+    public String aboutPage() {
+        return "admin/about/about_list";
+    }
+
+    @RequestMapping(value = "/about/edit",method = RequestMethod.GET)
+    public String aboutEdit() {
+        return "admin/about/edit_about";
+    }
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.topshow.mapper.AboutMapper">
+    <!--<insert id="insert" parameterType="training">
+        INSERT INTO `dance`(dance_name,dance_photo,dance_describe) VALUES (#{name},#{photo},#{content})
+    </insert>-->
+    <update id="update" parameterType="about">
+        UPDATE `about`
+        <set>
+            <if test="content != null">about_content=#{content}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <!--<delete id="del">
+        DELETE FROM `dance` where id = #{id}
+    </delete>-->
+    <select id="findAll" resultMap="aboutResultMap">
+        SELECT * from `about`;
+
+    </select>
+    <select id="findById" resultMap="aboutResultMap">
+        SELECT * FROM `about` WHERE id = #{id}
+
+    </select>
+    <resultMap id="aboutResultMap" type="about">
+        <id column="id" property="id"/>
+        <result column="about_content" property="content"/>
+    </resultMap>
+</mapper>

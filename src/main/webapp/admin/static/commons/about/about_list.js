@@ -6,15 +6,12 @@
 		table = layui.table,
 		laydate = layui.laydate;
 	var tableIns = table.render({
-		elem: '#trainingList',
-		url: getRealPath() + '/admin/training/list/get',
+		elem: '#aboutList',
+		url: getRealPath() + '/admin/about/list/get',
 		cellMinWidth: 95,
-		page: true,
 		method: "POST",
 		height: "full-125",
-		limits: [10, 15, 20, 25],
-		limit: 20,
-		id: "trainingListTable",
+		id: "aboutListTable",
 		cols: [
 				[
 				{
@@ -24,20 +21,7 @@
 					align: "center",
 				},
 				{
-					field: 'name',
-					title: '舞蹈名称',
-					align: "center"
-				},
-				{
-					field: 'photo',
-					title: '舞蹈简图',
-					align: 'center',
-					templet: function(d) {
-						return "<img src='"+ getRealPath() + '/'+d.photo+"' class='cover'/>";
-					}
-				},
-				{
-					field: 'describe',
+					field: 'content',
 					title: '内容概述',
 					align: 'center',
 					templet: function(d) {
@@ -46,7 +30,7 @@
 				},
 				{
 					title: '操作',
-					templet: '#trainingListBar',
+					templet: '#aboutListBar',
 					fixed: "right",
 					align: "center"
 				}
@@ -64,57 +48,25 @@
 		},
 		toolbar: true
 	});
-	function addTraining() {
-		var index = layui.layer.open({
-			title: "添加舞种",
-			type: 2,
-			content: getRealPath() + "/admin/dancetraining/add",
-			success: function(layero, index) {
-				var body = layui.layer.getChildFrame('body', index);
-				var iframeWindow = window[layero.find('iframe')[0]['name']];
-				setTimeout(function() {
-					layui.layer.tips('点击此处返回培训项目列表', '.layui-layer-setwin .layui-layer-close', {
-						tips: 3,
-						tipsMore: true
-					});
-					layui.layer.tips('选择图片后点击右边上传按钮上传!', body.find("#sub"),{tips:1,tipsMore:true});
-				}, 500)
-			},
-			end: function() {
-				$(window).unbind("resize");
-			}
-		})
-		layui.layer.full(index);
-		window.sessionStorage.setItem("index", index);
-		// 改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
-		$(window).on("resize", function() {
-			layui.layer.full(window.sessionStorage.getItem("index"));
-		})
-	}
-	$(".addNews_btn").click(function() {
-		addTraining();
-	})
 	// 列表操作
-	table.on('tool(trainingList)', function(obj) {
+	table.on('tool(aboutList)', function(obj) {
 		var layEvent = obj.event,
 			data = obj.data;
 		// 监听操作
 		//编辑页面
 		if(layEvent === "edit"){
 			var trainingIndex = layui.layer.open({
-				title: "编辑舞蹈",
+				title: "编辑简介",
 				type: 2,
-				content: getRealPath() + "/admin/dancetraining/edit",
+				content: getRealPath() + "/admin/about/edit",
 				success: function(layero, index) {
 					var body = layui.layer.getChildFrame('body', index);
 					var iframeWindow = window[layero.find('iframe')[0]['name']];
 					body.find("#id").val(data.id);
-					body.find(".name").val(data.name);
-					body.find("#saveimg").val(data.photo);
 					$.ajax({
 						type: "POST",
 						async:false,
-						url: getRealPath() + "/admin/training/get",
+						url: getRealPath() + "/admin/about/get",
 						data: {"id":data.id},
 						success: function(result) {
 							if(result.status == 200) {
@@ -125,7 +77,6 @@
 							}
 						}
 					});
-					body.find("#newsImg")[0].src = getRealPath() + data.photo;
 					if (typeof(iframeWindow.layui.form) != "undefined") {
 						iframeWindow.layui.form.render();
 					}
@@ -134,7 +85,6 @@
 							tips: 3,
 							tipsMore: true
 						});
-						layui.layer.tips('选择图片后点击右边上传按钮上传!', body.find("#sub"),{tips:1,tipsMore:true});
 					}, 500)
 				},
 				end: function() {
@@ -150,23 +100,6 @@
 			})
 		}else if(layEvent === 'showinfo') { // 详情
 			window.open(getRealPath() + "/training/detail/"+data.id);
-		} else if(layEvent === 'del') { // 删除
-			layer.confirm('该操作会将舞蹈的所有信息清空!<br/>确定删除?', {
-				icon: 3,
-				title: '提示信息'
-			}, function(index) {
-				$.post(getRealPath() + "/admin/training/del/submit",{id:data.id},function(result){
-					if(result.status == 200){
-						obj.del();// 删除缓存
-						top.layer.msg(result.message);
-					}else{
-						top.layer.msg("删除失败!");
-					}
-				},"json");
-				layer.close(index);
-			});
-		} else if(layEvent === 'preview') {//显示大图
-            preview_img(getRealPath() + "/"+data.danceImg);
-        }
+		}
 	});
 })
