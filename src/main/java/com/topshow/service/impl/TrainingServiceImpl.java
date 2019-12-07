@@ -81,4 +81,14 @@ public class TrainingServiceImpl implements TrainingService {
 
         return trainingMapper.del(Integer.valueOf(id));
     }
+
+    /**
+     * 获取总数
+     *
+     * @return
+     */
+    @Override
+    public Integer getCount() {
+        return trainingMapper.getCount();
+    }
 }

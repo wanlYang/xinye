@@ -13,95 +13,66 @@ layui.use(['form', 'layer','upload', 'laydate','croppers'], function() {
 	var date = new Date();
 	
 	form.verify({});
-	var temp_data;
-	var flag = false;
+	var flag = true;
 	// 监听表单
 	form.on("submit(addVideo)", function(data) {
-		temp_data = data;
-		if (flag) {
-			document.getElementById("ADD").click()
-			document.getElementById("ADDI").click()
-		}else{
-			top.layer.msg("请选择图片或视频!");
-		}
-		return false;
-	})
-	//上传视频
-	var videoindex;
-	upload.render({
-		size:512000,
-	    elem: '#editvideo',
-	    auto: false, //选择文件后不自动上传
-	    bindAction: '#ADD',
-	    method:"post",
-	    choose:function(object){
-	    	top.layer.msg("选择成功!")
-	    	$("#addVideo").text("点击上传").removeAttr("disabled").removeClass("layui-disabled");
-	    },
-	    before:function(object){
-	    	videoindex = top.layer.msg('视频图片上传中,请耐心等待', {
-				icon: 16,
-				time: false,
-				shade: 0.8
+		if(flag){
+			top.layer.msg("请上传简图!!", {
+				icon:5,
+				time: 1500,
+				anim: 6,
+				shade: 0,
+				shadeClose: true //开启遮罩关闭
 			});
-	    },
-	    accept: 'video',
-	    url: getRealPath() + '/upload/up',
-	    done: function(result){
-	    	$("#local").val(result.qiniuUrl);
-	    	temp_data.field.local = result.qiniuUrl;
-	    	top.layer.msg(result.info);
-	    	submit_form(temp_data);
-	    	setTimeout(function() {
-	    		top.layer.close(videoindex);
-		    	layer.closeAll("iframe");
-				parent.location.reload();
-			}, 500);
-	    },
-	    error: function(){
-	    	top.layer.msg("上传失败!");
-	    }
-	});
-	//缩略图上传
-	upload.render({
-		size:300,
-	    elem: '#editimg',
-	    auto: false, //选择文件后不自动上传
-	    bindAction: '#ADDI',
-	    method:"post",
-	    url: getRealPath() + '/upload/img/up',
-	    accept:"images",
-	    choose:function(object){
-	    	top.layer.msg("选择成功!");
-	    	flag = true;
-	    },
-	    done: function(result){
-	    	$("#video_img").val(result.qiniuUrl);
-	    	temp_data.field.video_img = result.qiniuUrl;
-	    },
-	    error: function(){
-	    	top.layer.msg("上传失败!");
-	    }
-	});
-	//提交数据方法C2b8fn4-lRQHc0XgTy98wsTXcOoHUqowVukDT6WQ
-	//1gMkVc99HlF9TDA1DJR9xjUm8D7uuswATml30m4Z
-	//http://video.jytopshow.com/01de53a812eda5989ad7da8084bead42.mp4
-	//jinyanwudao
-	function submit_form(data){
+			return false;
+		}
+		var index = top.layer.msg('数据提交中,请稍候', {
+			icon: 16,
+			time: false,
+			shade: 0.8
+		});
+		// 实际使用时的提交信息
 		$.ajax({
 			type: "POST",
-			url: getRealPath() + "/admin/video/add/submit",
+			url: getRealPath() + "/admin/video/insert",
 			data: data.field,
 			success: function(result) {
 				if(result.status == 200) {
 					setTimeout(function() {
-						top.layer.msg("添加成功！");
+						top.layer.close(index);
+						top.layer.msg("视频添加成功！");
+						layer.closeAll("iframe");
+						parent.location.reload();
 					}, 500);
 				} else {
 					top.layer.close(index);
-					top.layer.msg("添加失败！" + result.message);
+					top.layer.msg("视频添加失败！" + result.message);
 				}
 			}
 		});
-	}
+		return false;
+	})
+
+	upload.render({
+		elem: '#videoImgIns'
+		, url: getRealPath() + "/admin/video/upload/img" //必填项
+		, method: 'post'  //可选项。HTTP类型，默认post
+		, accept: 'images'
+		, size:3000
+		, acceptMime: 'image/*'
+		, before: function (obj) { //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+			//预读本地文件示例，不支持ie8
+		}
+		,choose:function (obj) {
+		}
+		,done: function(result){
+			layer.msg(result.msg,{icon: 1});
+			flag = false;
+			$(".showVideoImg_val").val(result.data.src);
+			$("#showVideoImg")[0].src = result.data.src
+		}
+		,error: function(){
+			layer.msg("上传失败");
+		}
+	});
 })

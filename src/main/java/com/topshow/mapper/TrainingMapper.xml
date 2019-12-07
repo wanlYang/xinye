@@ -30,4 +30,8 @@
         <result column="dance_photo" property="photo"/>
         <result column="dance_describe" property="content"/>
     </resultMap>
+
+    <select id="getCount" resultType="integer">
+        select count(*) FROM `dance`
+    </select>
 </mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.topshow.mapper.IdeaMapper">
+	<!--全部简介-->
+	<select id="selectAllIdea" resultMap="ideaResultMap">
+		SELECT * from idea
+	</select>
+
+	<!--添加留言-->
+	<insert id="insertIdea" parameterType="Idea">
+		insert into idea value (null,#ideaName},#{ideaSex},#{ideaCall},#{ideaContent},#{ideaTime})
+	</insert>
+
+    <!--修改留言-->
+	<update id="updateIdea" parameterType="Idea">
+		update idea set
+			#ideaName},#{ideaSex},#{ideaCall},#{ideaContent},#{ideaTime}
+		where id=#{id}
+	</update>
+
+	<!--删除留言-->
+	<delete id="deleteIdea">
+		delete from idea where id=#{id}
+	</delete>
+
+
+    <resultMap type="Idea" id="ideaResultMap">
+        <id column="id" property="id"></id>
+        <result column="idea_name" property="ideaName"/>
+		<result column="idea_sex" property="ideaSex"/>
+        <result column="idea_call" property="ideaCall"/>
+        <result column="idea_content" property="ideaContent"/>
+        <result column="idea_time" property="ideaTime"/>
+
+    </resultMap>
+</mapper>

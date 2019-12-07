@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.topshow.mapper.HonorMapper">
+	<!--全部查找教练数据-->
+	<select id="selectAllHonor" resultMap="honorResultMap">
+		SELECT * from honor
+	</select>
+
+	<!--添加荣誉-->
+	<insert id="insertHonor" parameterType="Honor">
+		insert into honor value (null,#{honorName},#{honorPhoto})
+	</insert>
+
+    <!--修改荣誉-->
+	<update id="updateHonor" parameterType="Honor">
+		update honor
+		<set>
+			<if test="honorName != null">honor_name=#{honorName},</if>
+			<if test="honorPhoto != null">honor_photo=#{honorPhoto}</if>
+		</set>
+		where id=#{id}
+	</update>
+
+	<!--删除荣誉-->
+	<delete id="deleteHonor">
+		delete from honor where id=#{id}
+	</delete>
+
+
+    <resultMap type="Honor" id="honorResultMap">
+        <id column="id" property="id"></id>
+        <result column="honor_name" property="honorName"/>
+        <result column="honor_photo" property="honorPhoto"/>
+    </resultMap>
+</mapper>

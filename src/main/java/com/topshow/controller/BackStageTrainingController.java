@@ -45,7 +45,7 @@ public class BackStageTrainingController {
         }
         result.setStatus(200);
         result.setMessage("获取成功@!");
-        result.setCount(trainings.size());
+        result.setCount(trainingService.getCount());
         result.setData(trainings);
         return result;
     }

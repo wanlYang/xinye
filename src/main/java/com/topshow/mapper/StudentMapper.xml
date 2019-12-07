@@ -30,4 +30,7 @@
         <result column="student_photo" property="photo"/>
         <result column="student_content" property="content"/>
     </resultMap>
+    <select id="getCount" resultType="integer">
+        SELECT COUNT(*) FROM `student`
+    </select>
 </mapper>

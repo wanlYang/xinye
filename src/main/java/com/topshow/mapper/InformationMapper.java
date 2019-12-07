@@ -19,4 +19,6 @@ public interface InformationMapper {
     Information findById(String id);
 
     Integer delete(String id);
+
+    Integer getCount();
 }

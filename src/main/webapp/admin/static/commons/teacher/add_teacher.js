@@ -13,19 +13,20 @@ layui.use(['form', 'layer','upload', 'laydate','croppers'], function() {
 	var date = new Date();
 	
 	form.verify({});
-	var tempImg = false;
+	var tempImg_m = true;
+	var tempImg_p = true;
 	// 监听表单
 	form.on("submit(addTeacher)", function(data) {
-		 if(!tempImg){
-		        top.layer.msg("请上传简图!!", {
-		        icon:5,
-		        time: 1500,
-		        anim: 6,
-		        shade: 0.2,
-		        shadeClose: true //开启遮罩关闭
-		        });
-		        return false;
-		 }
+		if(tempImg_m && tempImg_p){
+			top.layer.msg("请上传简图!!", {
+				icon:5,
+				time: 1500,
+				anim: 6,
+				shade: 0,
+				shadeClose: true //开启遮罩关闭
+			});
+			return false;
+		}
 		var index = top.layer.msg('数据提交中,请稍候', {
 			icon: 16,
 			time: false,
@@ -34,7 +35,7 @@ layui.use(['form', 'layer','upload', 'laydate','croppers'], function() {
 		// 实际使用时的提交信息
 		$.ajax({
 			type: "POST",
-			url: getRealPath() + "/admin/teacher/add/submit",
+			url: getRealPath() + "/admin/teacher/insert",
 			data: data.field,
 			success: function(result) {
 				if(result.status == 200) {
@@ -52,19 +53,49 @@ layui.use(['form', 'layer','upload', 'laydate','croppers'], function() {
 		});
 		return false;
 	})
-	// 创建一个头像上传组件
-    croppers.render({
-        elem: '#editimg',
-        saveW: 500,// 保存宽度
-        saveH: 375,
-        mark: 4/3,// 选取比例
-        area: ['900px', '700px'],// 弹窗宽度
-        url: getRealPath() + "/admin/teacher/upload/img",// 图片上传接口返回和(layui 的upload 模块)返回的JOSN一样
-        done: function(result){// 上传完毕回调
-        	var teacherImg = $("#teacherImg");
-            teacherImg[0].src = result.data.src;
-            tempImg = true;
-            layer.msg(result.msg,{icon: 1});
-        }
-    });
+	upload.render({
+		elem: '#teacher_m'
+		, url: getRealPath() + "/admin/teacher/upload/img" //必填项
+		, method: ''  //可选项。HTTP类型，默认post
+		, accept: 'images'
+		, size:3000
+		, acceptMime: 'image/*'
+		, before: function (obj) { //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+			//预读本地文件示例，不支持ie8
+		}
+		,choose:function (obj) {
+
+		}
+		,done: function(result){
+			layer.msg(result.msg,{icon: 1});
+			tempImg_m = false;
+			$("#teacherImg_m").val(result.data.src);
+			$("#mol")[0].src = result.data.src;
+		}
+		,error: function(){
+			layer.msg("上传失败");
+		}
+	});
+	upload.render({
+		elem: '#teacher_p'
+		, url: getRealPath() + "/admin/teacher/upload/img" //必填项
+		, method: ''  //可选项。HTTP类型，默认post
+		, accept: 'images'
+		, size:3000
+		, acceptMime: 'image/*'
+		, before: function (obj) { //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+			//预读本地文件示例，不支持ie8
+		}
+		,choose:function (obj) {
+		}
+		,done: function(result){
+			layer.msg(result.msg,{icon: 1});
+			tempImg_m = false;
+			$("#teacherImg_p").val(result.data.src);
+			$("#pc")[0].src = result.data.src
+		}
+		,error: function(){
+			layer.msg("上传失败");
+		}
+	});
 })

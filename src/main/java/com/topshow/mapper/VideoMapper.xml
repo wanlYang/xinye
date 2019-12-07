@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.topshow.mapper.VideoMapper">
+    <select id="selectAllVideo" resultMap="videoResultMap">
+		select * from video
+    </select>
+
+	<insert id="insertVideo">
+		insert into video value (null,#{videoName},#{videoLink},#{videoPhoto},
+		#{teacherName},#{videoTime},#{person});
+	</insert>
+
+	<update id="updateVideo">
+		update video
+		<set>
+			<if test="videoName != null">video_name=#{videoName},</if>
+			<if test="videoLink != null">video_link=#{videoLink},</if>
+			<if test="videoPhoto != null">video_photo=#{videoPhoto},</if>
+			<if test="teacherName != null">teacher_name=#{teacherName},</if>
+			<if test="videoTime != null">video_time=#{videoTime},</if>
+			<if test="person != null">person=#{person}</if>
+		</set>
+		where id=#{id}
+
+	</update>
+
+	<delete id="deleteVideo">
+		delete from video where id=#{id}
+	</delete>
+
+    <resultMap type="Video" id="videoResultMap">
+    	<id column="id" property="id"></id>
+    	<result column="video_name" property="videoName"/>
+    	<result column="video_link" property="videoLink"/>
+    	<result column="video_photo" property="videoPhoto"/>
+    	<result column="teacher_name" property="teacherName"/>
+    	<result column="video_time" property="videoTime"/>
+    	<result column="person" property="person"/>
+    </resultMap>
+</mapper>

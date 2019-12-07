@@ -42,4 +42,10 @@ public interface StudentService {
      * @return
      */
     Integer del(String id);
+
+    /**
+     * 获取总数
+     * @return
+     */
+    Integer getCount();
 }

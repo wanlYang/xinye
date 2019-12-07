@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.topshow.mapper.ActivityMapper">
+	<!--查找所有活动-->
+    <select id="selectAllActivity" resultMap="ActivityResultMap">
+		select * from activity
+    </select>
+	<select id="get" resultMap="ActivityResultMap">
+			select * from activity where id = #{id}
+	</select>
+	<!--添加活动-->
+	<insert id="insertActivity">
+		insert into activity value (null,#{activeName},#{activePhoto},#{activeTime},
+		#{activeContent},#{activeState});
+	</insert>
+	<!--修改活动-->
+	<update id="updateActivity">
+		update activity
+		<set>
+			<if test="activeName != null">activity_name=#{activeName},</if>
+			<if test="activePhoto != null">activity_photo=#{activePhoto},</if>
+			<if test="activeTime != null">activity_time=#{activeTime},</if>
+			<if test="activeContent != null">activity_content=#{activeContent},</if>
+			<if test="activeState != null">activity_state=#{activeState}</if>
+		</set>
+
+		where id=#{id}
+	</update>
+
+	<!--删除活动-->
+	<delete id="deleteActivity">
+		delete from activity where id=#{id}
+	</delete>
+
+    <resultMap type="activity" id="ActivityResultMap">
+    	<id column="id" property="id"></id>
+    	<result column="activity_name" property="activeName"/>
+    	<result column="activity_photo" property="activePhoto"/>
+    	<result column="activity_time" property="activeTime" javaType="string"/>
+    	<result column="activity_content" property="activeContent"/>
+    	<result column="activity_state" property="activeState"/>
+    </resultMap>
+</mapper>

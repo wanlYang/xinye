@@ -8,13 +8,10 @@
 	// 导师列表
 	var tableIns = table.render({
 		elem: '#courcesList',
-		url: getRealPath() + '/admin/cources/get/list',
+		url: getRealPath() + '/admin/cources/select',
 		cellMinWidth: 95,
-		page: true,
 		method: "POST",
 		height: "full-125",
-		limits: [10, 15, 20, 25],
-		limit: 20,
 		id: "courcesListTable",
 		cols: [
 				[	
@@ -25,13 +22,27 @@
 					align: "center",
 				},
 				{
-					field: 'tableImg',
+					field: 'classPhoto',
 					title: '课程表图',
-					event: 'preview',
-                    style: 'cursor: pointer;',
 					align: 'center',
 					templet: function(d) {
-						return "<img title='点击预览' src='"+ getRealPath() + '/'+d.tableImg+"' class='cover'/>";
+						return "<img src='"+ getRealPath() + '/'+d.classPhoto+"' class='cover'/>";
+					}
+				},
+				{
+					field: 'className',
+					title: '标题',
+					align: 'center',
+					templet: function(d) {
+						return d.className;
+					}
+				},
+				{
+					field: 'classTime',
+					title: '时间',
+					align: 'center',
+					templet: function(d) {
+						return Format(d.classTime,"yyyy-MM-dd hh:mm:ss");
 					}
 				},
 				{
@@ -85,13 +96,44 @@
 	table.on('tool(courcesList)', function(obj) {
 		var layEvent = obj.event,
 			data = obj.data;
-		// 监听操作
-		if(layEvent === 'del') { // 删除
+        if(layEvent === "edit"){
+            var videoIndex = layui.layer.open({
+                title: "编辑视频",
+                type: 2,
+                content: getRealPath() + "/admin/cources/edit",
+                success: function(layero, index) {
+                    var body = layui.layer.getChildFrame('body', index);
+                    var iframeWindow = window[layero.find('iframe')[0]['name']];
+                    body.find(".id").val(data.id);
+                    body.find("#courcesImgVal").val(data.classPhoto);
+                    body.find(".className").val(data.className);
+                    body.find("#cources_img_view")[0].src = getRealPath() + data.classPhoto;
+                    if (typeof(iframeWindow.layui.form) != "undefined") {
+                        iframeWindow.layui.form.render();
+                    }
+                    setTimeout(function() {
+                        layui.layer.tips('点击此处返回列表', '.layui-layer-setwin .layui-layer-close', {
+                            tips: 3
+                        });
+                    }, 500)
+                },
+                end: function() {
+                    $(window).unbind("resize");
+
+                }
+            })
+            layui.layer.full(videoIndex);
+            window.sessionStorage.setItem("videoIndex", videoIndex);
+            // 改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+            $(window).on("resize", function() {
+                layui.layer.full(window.sessionStorage.getItem("videoIndex"));
+            })
+        }else if(layEvent === 'del') { // 删除
 			layer.confirm('确定删除此课程表?', {
 				icon: 3,
 				title: '提示信息'
 			}, function(index) {
-				$.post(getRealPath() + "/admin/cources/delete/submit",{id:data.id},function(result){
+				$.post(getRealPath() + "/admin/cources/delete",{id:data.id},function(result){
 					if(result.status == 200){
 						obj.del();// 删除缓存
 						location.reload();
@@ -102,10 +144,6 @@
 				},"json");
 				layer.close(index);
 			});
-		} else if(layEvent === 'preview') {//显示大图
-            preview_img(getRealPath() + "/"+data.tableImg);
-        } else if(layEvent === 'showinfo') {
-        	window.open(getRealPath() + "/cources");
-        }
+		}
 	});
 })

@@ -92,7 +92,7 @@ public class BackStageAboutController {
         map_data.put("msg", "上传成功!");
         String url = (String) changeImgFunction.getData();
         map_data.put("file_path", url.split(",")[0]);
-        map_data.put("title", url.split(",")[1]);
+        map_data.put("title",       url.split(",")[1]);
         return map_data;
     }
 

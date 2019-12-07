@@ -143,4 +143,82 @@ public class BackStageViewController {
     public String aboutEdit() {
         return "admin/about/edit_about";
     }
+    @RequestMapping(value = "danceteacher/list",method = RequestMethod.GET)
+    public String teacherList() {
+        return "admin/teacher/teacher_list";
+    }
+    @RequestMapping(value = "danceteacher/add",method = RequestMethod.GET)
+    public String teacherAdd() {
+        return "admin/teacher/add_teacher";
+    }
+    @RequestMapping(value = "danceteacher/edit",method = RequestMethod.GET)
+    public String teacherEdit() {
+        return "admin/teacher/edit_teacher";
+    }
+
+    @RequestMapping(value = "video/list",method = RequestMethod.GET)
+    public String videoList() {
+        return "admin/video/video_list";
+    }
+    @RequestMapping(value = "video/add",method = RequestMethod.GET)
+    public String videoAdd() {
+        return "admin/video/add_video";
+    }
+
+    @RequestMapping(value = "video/edit",method = RequestMethod.GET)
+    public String videoEdit() {
+        return "admin/video/edit_video";
+    }
+    @RequestMapping(value = "cources/list",method = RequestMethod.GET)
+    public String courcesList() {
+        return "admin/cources/cources_list";
+    }
+    @RequestMapping(value = "cources/add",method = RequestMethod.GET)
+    public String courcesAdd() {
+        return "admin/cources/add_cources";
+    }
+    @RequestMapping(value = "cources/edit",method = RequestMethod.GET)
+    public String courcesEdit() {
+        return "admin/cources/edit_cources";
+    }
+    @RequestMapping(value = "honor/list",method = RequestMethod.GET)
+    public String honorList() {
+        return "admin/honor/honor_list";
+    }
+    @RequestMapping(value = "honor/add",method = RequestMethod.GET)
+    public String honorAdd() {
+        return "admin/honor/add_honor";
+    }
+    @RequestMapping(value = "honor/edit",method = RequestMethod.GET)
+    public String honorEdit() {
+        return "admin/honor/edit_honor";
+    }
+    @RequestMapping(value = "idea/list",method = RequestMethod.GET)
+    public String ideaList() {
+        return "admin/idea/idea_list";
+    }
+    @RequestMapping(value = "activity/list",method = RequestMethod.GET)
+    public String activityList() {
+        return "admin/activity/activity_list";
+    }
+    @RequestMapping(value = "activity/add",method = RequestMethod.GET)
+    public String activityAdd() {
+        return "admin/activity/add_activity";
+    }
+    @RequestMapping(value = "activity/edit",method = RequestMethod.GET)
+    public String activityEdit() {
+        return "admin/activity/edit_activity";
+    }
+    @RequestMapping(value = "list",method = RequestMethod.GET)
+    public String adminList() {
+        return "admin/admin/admin_list";
+    }
+    @RequestMapping(value = "add",method = RequestMethod.GET)
+    public String adminAdd() {
+        return "admin/admin/add_admin";
+    }
+    @RequestMapping(value = "edit",method = RequestMethod.GET)
+    public String adminEdit() {
+        return "admin/admin/edit_admin";
+    }
 }

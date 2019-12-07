@@ -71,7 +71,7 @@ public class BackStageInformationController {
 
         result.setStatus(200);
         result.setMessage("获取成功@!");
-        result.setCount(informations.size());
+        result.setCount(informationService.getCount());
         result.setData(informations);
         return result;
     }

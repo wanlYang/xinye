@@ -13,6 +13,8 @@ import com.topshow.constant.TopShowConstant;
 import com.topshow.entity.Admin;
 import com.topshow.service.AdminService;
 
+import java.util.List;
+
 /**
  * 后台管理员登陆
  * @author Administrator
@@ -43,6 +45,54 @@ public class AdminController {
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/admin/login";
+    }
+
+    @RequestMapping(value = "/insert",method = RequestMethod.POST)
+    @ResponseBody
+    public Result insert(Admin admin) {
+        Result result = new Result();
+        Integer row = adminService.insert(admin);
+        result.setStatus(200);
+        result.setMessage("添加成功!");
+        result.setCount(row);
+        result.setData(row);
+        return result;
+    }
+
+    @RequestMapping(value = "/update",method = RequestMethod.POST)
+    @ResponseBody
+    public Result update(Admin admin) {
+        Result result = new Result();
+        Integer row = adminService.update(admin);
+        result.setStatus(200);
+        result.setMessage("编辑成功!");
+        result.setCount(row);
+        result.setData(row);
+        return result;
+    }
+
+    @RequestMapping(value = "/delete",method = RequestMethod.POST)
+    @ResponseBody
+    public Result delete(String id) {
+        Result result = new Result();
+        Integer row = adminService.delete(id);
+        result.setStatus(200);
+        result.setMessage("删除成功!");
+        result.setCount(row);
+        result.setData(row);
+        return result;
+    }
+
+    @RequestMapping(value = "/select",method = RequestMethod.POST)
+    @ResponseBody
+    public Result getList() {
+        Result result = new Result();
+        List<Admin> admins = adminService.findAll();
+        result.setStatus(200);
+        result.setMessage("获取成功!");
+        result.setCount(admins.size());
+        result.setData(admins);
+        return result;
     }
 
 }

@@ -34,4 +34,7 @@
         <result column="news_content" property="content"/>
         <result column="news_person" property="person"/>
     </resultMap>
+    <select id="getCount" resultType="integer">
+        SELECT COUNT(*) FROM  `news`
+    </select>
 </mapper>

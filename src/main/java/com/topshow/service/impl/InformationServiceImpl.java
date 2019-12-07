@@ -78,4 +78,14 @@ public class InformationServiceImpl implements InformationService {
     public Integer delete(String id) {
         return informationMapper.delete(id);
     }
+
+    /**
+     * 获取总数
+     *
+     * @return
+     */
+    @Override
+    public Integer getCount() {
+        return informationMapper.getCount();
+    }
 }

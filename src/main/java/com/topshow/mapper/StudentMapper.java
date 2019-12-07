@@ -19,4 +19,6 @@ public interface StudentMapper {
     Integer update(Student student);
 
     Integer del(String id);
+
+    Integer getCount();
 }

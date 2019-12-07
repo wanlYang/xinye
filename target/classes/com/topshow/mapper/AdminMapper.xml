@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.topshow.mapper.AdminMapper">
+    <insert id="insert">
+        INSERT INTO `admin`(name,password) VALUES (#{name},#{password})
+    </insert>
+    <update id="update" parameterType="admin">
+        UPDATE `admin`
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="password != null">password = #{password}</if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="delete">
+        DELETE FROM `admin` WHERE id = #{id}
+    </delete>
     <select id="findAdminByNameAndPassword" resultMap="adminResultMap">
     	SELECT * FROM `admin` WHERE name = #{admin_name} AND password = #{admin_password}
+    </select>
+    <select id="getAllAdmin" resultMap="adminResultMap">
+        SELECT * FROM `admin`
     </select>
     <resultMap type="Admin" id="adminResultMap">
     	<id column="id" property="id"></id>

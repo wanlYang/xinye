@@ -45,4 +45,10 @@ public interface TrainingMapper {
      * @return
      */
     Integer del(Integer id);
+
+    /**
+     * 获取总数
+     * @return
+     */
+    Integer getCount();
 }

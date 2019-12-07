@@ -46,7 +46,7 @@ public class BackStageStudentController {
 
         result.setStatus(200);
         result.setMessage("获取成功@!");
-        result.setCount(students.size());
+        result.setCount(studentService.getCount());
         result.setData(students);
         return result;
     }

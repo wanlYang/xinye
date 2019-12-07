@@ -79,4 +79,16 @@ public class StudentServiceImpl implements StudentService {
 
         return studentMapper.del(id);
     }
+
+    /**
+     * 获取总数
+     *
+     * @return
+     */
+    @Override
+    public Integer getCount() {
+
+
+        return studentMapper.getCount();
+    }
 }

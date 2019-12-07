@@ -8,7 +8,7 @@
 	// 导师列表
 	var tableIns = table.render({
 		elem: '#teacherList',
-		url: getRealPath() + '/admin/teacher/get/list',
+		url: getRealPath() + '/admin/teacher/select',
 		cellMinWidth: 95,
 		page: true,
 		method: "POST",
@@ -17,12 +17,7 @@
 		limit: 20,
 		id: "teacherListTable",
 		cols: [
-				[	
-				{
-					type: "checkbox",
-					fixed: "left",
-					width: 50
-				},
+				[
 				{
 					sort: true,
 					field: "id",
@@ -31,69 +26,34 @@
 					align: "center",
 				},
 				{
-					field: 'name',
+					field: 'teacherName',
 					title: '教师名称',
 					minWidth: 100,
 					align: "center"
 				},
 				{
-					field: 'graduateSchool',
-					title: '毕业学院',
+					field: 'teacherDance',
+					title: '擅长舞种',
 					minWidth: 100,
 					align: 'center',
 					templet: function(d) {
-						return '<a class="layui-blue" href="mailto:' + d.graduateSchool + '">' + d.graduateSchool + '</a>';
+						return d.teacherDance;
 					}
 				},
 				{
-					field: 'teachingQualification',
-					title: '教学资质',
+					field: 'teacherPcPhoto',
+					title: 'PC简图',
 					align: 'center',
 					templet: function(d) {
-						return d.teachingQualification;
+						return "<img src='"+ getRealPath() + '/'+d.teacherPcPhoto+"' class='cover'/>";
 					}
 				},
 				{
-					field: 'teachingScope',
-					title: '教学范围',
+					field: 'teacherModPhoto',
+					title: '移动简图',
 					align: 'center',
 					templet: function(d) {
-						return d.teachingScope;
-					}
-				},
-				{
-					field: 'describe',
-					title: '描述',
-					align: 'center',
-					templet: function(d) {
-						return d.describe;
-					}
-				},
-				{
-					sort: true,
-					field: 'age',
-					title: '年龄',
-					align: 'center',
-					templet: function(d) {
-						return d.age;
-					}
-				},
-				{
-					field: 'international',
-					title: '国籍',
-					align: 'center',
-					templet: function(d) {
-						return d.international;
-					}
-				},
-				{
-					field: 'img',
-					title: '导师简图',
-					event: 'preview',
-                    style: 'cursor: pointer;',
-					align: 'center',
-					templet: function(d) {
-						return "<img title='点击预览' src='"+ getRealPath() + '/'+d.img+"' class='cover'/>";
+						return "<img src='"+ getRealPath() + '/'+d.teacherModPhoto+"' class='cover'/>";
 					}
 				},
 				{
@@ -116,44 +76,6 @@
 			dataName: 'data' // 规定数据列表的字段名称，默认：data
 		},
 		toolbar: true
-	});
-	// 检测select
-	var keyWordType = "";
-	form.on('select(skeyType)', function(data){
-		if(data.value == ""){
-			$("#keyWordBox").html("");
-		}else{
-			$("#keyWordBox").html(
-				"<input type='text' class='layui-input searchVal' placeholder='请输入关键字'>"
-			);
-			keyWordType = "text";
-			form.render();
-		}
-	});   
-	// 搜索
-	var active = {
-		reload: function(){
-			var keyWord = "";
-			console.log(keyWordType);
-			if(keyWordType == "text"){
-				keyWord = $('.searchVal').val();
-			}
-            var keyType = $('.keyType');
-            table.reload('teacherListTable', {
-            	page: {
-					curr: 1 // 重新从第 1 页开始
-				},
-				method:'post',
-                where: {
-                    keyType: keyType.val(),
-                    keyWord: keyWord
-                }
-            });
-        }
-    };
-	$(".search_btn").on("click", function() {
-		var type = $(this).data('type');
-		active[type] ? active[type].call(this) : '';
 	});
 	// 添加导师
 	function addTeacher() {
@@ -190,7 +112,7 @@
 			data = obj.data;
 		// 监听操作
 		//编辑导师页面
-		if(layEvent === "editinfo"){
+		if(layEvent === "edit"){
 			var teacherIndex = layui.layer.open({
 				title: "编辑导师",
 				type: 2,
@@ -199,15 +121,12 @@
 					var body = layui.layer.getChildFrame('body', index);
 					var iframeWindow = window[layero.find('iframe')[0]['name']];
 					body.find("#id").val(data.id);
-					body.find(".name").val(data.name);
-					body.find("#imgtext").val(data.img);
-					body.find(".graduateSchool").val(data.graduateSchool);
-					body.find(".teachingQualification").val(data.teachingQualification);
-					body.find(".teachingScope").val(data.teachingScope);
-					body.find(".describe").val(data.describe);
-					body.find(".age").val(data.age);
-					body.find(".international").val(data.international);
-					body.find("#teacherImg")[0].src = getRealPath() + data.img;
+					body.find("#teacherImg_m").val(data.teacherModPhoto);
+					body.find(".teacherName").val(data.teacherName);
+					body.find(".teacherDance").val(data.teacherDance);
+					body.find("#teacherImg_p").val(data.teacherPcPhoto);
+					body.find("#mol")[0].src = getRealPath() + data.teacherModPhoto;
+					body.find("#pc")[0].src = getRealPath() + data.teacherPcPhoto;
 					if (typeof(iframeWindow.layui.form) != "undefined") {
 						iframeWindow.layui.form.render();
 					}
@@ -228,15 +147,12 @@
 			$(window).on("resize", function() {
 				layui.layer.full(window.sessionStorage.getItem("teacherIndex"));
 			})
-		}else if(layEvent === 'showinfo') { // 详情
-			window.open(getRealPath() + "/teacher/detail/"+data.id);
-			//window.location.href = ;
-		} else if(layEvent === 'del') { // 删除
+		}else if(layEvent === 'del') { // 删除
 			layer.confirm('该操作会将导师的所有信息清空!<br/>确定删除此导师?', {
 				icon: 3,
 				title: '提示信息'
 			}, function(index) {
-				$.post(getRealPath() + "/admin/teacher/delete/submit",{id:data.id},function(result){
+				$.post(getRealPath() + "/admin/teacher/delete",{id:data.id},function(result){
 					if(result.status == 200){
 						obj.del();// 删除缓存
 						top.layer.msg(result.message);
@@ -246,9 +162,7 @@
 				},"json");
 				layer.close(index);
 			});
-		} else if(layEvent === 'preview') {//显示大图
-            preview_img(getRealPath() + "/"+data.img);
-        }
+		}
 	});
 	
 })

@@ -42,4 +42,10 @@ public interface InformationService{
      * @return
      */
     Integer delete(String id);
+
+    /**
+     * 获取总数
+     * @return
+     */
+    Integer getCount();
 }
